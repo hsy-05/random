@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.brown,  //主题颜色样本
+        primarySwatch: Colors.brown,  //主题颜色
         backgroundColor: const Color.fromRGBO(235, 212, 189, 1),
       ),
       home: const RandomHomePage(),

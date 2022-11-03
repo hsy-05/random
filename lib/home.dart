@@ -16,10 +16,10 @@ class _RandomHomePageState extends State<RandomHomePage> {
   final TextEditingController strSecNum1Controller = TextEditingController();//輸入字串的個數
   final TextEditingController strSecNum2Controller = TextEditingController();//輸入字串的個數
 
-  var strVal = "";
-  var strNum = 0;
+  var strVal = "";  //輸入的字串
+  var strNum = 0;  //次數
   var lines = <String>[]; //總字串
-  String resultList = "";
+  String resList = "";  //結果
 
   //final _randomText = Random();
   //String resultText = "";
@@ -138,7 +138,7 @@ class _RandomHomePageState extends State<RandomHomePage> {
                   height: 40,
                 ),
                 Text(
-                  "亂數結果 : $resultList",
+                  "亂數結果 : $resList",
                   style: const TextStyle(
                       fontSize: 28, fontWeight: FontWeight.bold),
                 ),
@@ -156,6 +156,7 @@ class _RandomHomePageState extends State<RandomHomePage> {
     print('檢查strNumController.text是否為 INT：' + strNumController.text is int);
   }
 
+  //字串轉數字
   void _strNUmText() {
     if(strNumController.text.isNotEmpty){
       strNum = int.parse(strNumController.text);
@@ -167,18 +168,19 @@ class _RandomHomePageState extends State<RandomHomePage> {
 
   //選取字串的次數
   String pickRandomItems(int count) {
-    lines = strVal.split('\n');
+    lines = strVal.split('\n');   //切割字串後放入list
     final list = List.from(lines);
+    print('List：$list');
     _strNUmText();
     if(strNum <= list.length ){
       list.shuffle(); // 隨機排序
       final allList = list.take(count).toList();
-      resultList = allList.join(', ');
+      resList = allList.join(', ');
     }
     else{
       showWinnerToast();
     }
-    return resultList; // 從0 - count 獲取元素
+    return resList; // 從0 - count 獲取元素
   }
   // 提示框
   void showWinnerToast() {
