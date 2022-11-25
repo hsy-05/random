@@ -1,8 +1,10 @@
 import "dart:math";
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'home_num.dart';
+
 class RandomHomePage extends StatefulWidget {
   const RandomHomePage({Key? key}) : super(key: key);
 
@@ -20,7 +22,7 @@ class _RandomHomePageState extends State<RandomHomePage> {
   var strNum = 0;  //次數
   var lines = <String>[]; //總字串
   String resList = "";  //結果
-
+  bool _igBtnVis = false;
   //final _randomText = Random();
   //String resultText = "";
   //var resultArray = <String>[];
@@ -129,6 +131,7 @@ class _RandomHomePageState extends State<RandomHomePage> {
                             //randomList();
                             pickRandomItems(strNum);  //結果
                             logResult();    //debug
+                            numVal();
                             WidgetsBinding.instance?.focusManager.primaryFocus?.unfocus(); //鍵盤退出
                           });
                         },
@@ -142,6 +145,22 @@ class _RandomHomePageState extends State<RandomHomePage> {
                   style: const TextStyle(
                       fontSize: 28, fontWeight: FontWeight.bold),
                 ),
+                Visibility(
+                  visible: _igBtnVis, // bool
+                  child:
+                  SizedBox(
+                      height: 50,
+                      width: 150,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              serachByIG();
+                            });
+                          },
+                          child: const Text("IG查詢標籤", style: const TextStyle(fontSize:20, fontWeight: FontWeight.bold),))),
+
+                ),
+
               ],
             ),
           ),
@@ -154,6 +173,7 @@ class _RandomHomePageState extends State<RandomHomePage> {
     print('結果：'+ pickRandomItems(strNum));
     print('strNum：$strNum');
     print('檢查strNumController.text是否為 INT：' + strNumController.text is int);
+
   }
 
   //字串轉數字
@@ -192,6 +212,38 @@ class _RandomHomePageState extends State<RandomHomePage> {
         backgroundColor: const Color.fromRGBO(255, 225, 31, 1),  //背景
         textColor: Colors.black,
         fontSize: 16.0);
+  }
+
+  //判斷字串否只有一個
+  bool numVal(){
+    if(strNum == 1){
+      _igBtnVis = true;
+    }
+    else{
+      _igBtnVis = false;
+    }
+    return _igBtnVis;
+  }
+
+  //判斷字串來顯示按鈕
+  void serachByIG(){
+    if(strNum == 1){
+      _launch();
+      print('傳送的字串：'+resList);
+    }
+    else{
+      showWinnerToast();
+    }
+  }
+
+  //IG URL
+  _launch() async {
+    Uri url = Uri.parse('https://www.instagram.com/explore/tags/'+resList);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
 }
